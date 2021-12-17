@@ -4,11 +4,11 @@ import yaml
 import pickle
 
 from libs.cli import Cli
-
+from libs import folders
 
 class FileManager:
     default_extension = "yaml"
-    root = os.environ["HOME"]
+    root = folders.home
 
     @classmethod
     def load(cls, *path, mode="r", folder=False, add_ext=True):

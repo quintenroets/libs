@@ -48,7 +48,7 @@ class Cli:
             commands = itertools.chain(commands, ["echo $'\nPress enter to quit.'", "read"])
 
         joiner = "; " if wait else "& "
-        commands = ["/bin/bash", "-c", joiner.join(commands)]
+        commands = [os.environ["SHELL"], "-c", joiner.join(commands)]
         if console or debug:
             console = "konsole"
             commands = [console, "--new-tab", "-e"] + commands
