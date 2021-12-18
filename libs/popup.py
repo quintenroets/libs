@@ -86,11 +86,11 @@ class Popup:
     def set_progress(self, progress):
         self.progress_value = progress
         self.show_progress()
-        if self.output and session_bus is not None:
+        if self.output:
             self.handle.setDescriptionField(1, "", str(self.output))
         
     def show_progress(self, percentage=None):
-        if self.amount != 0 and session_bus is not None:
+        if self.amount != 0 and self.amount is not None:
             if not percentage:
                 percentage = 100 * self.progress_value / self.amount
             # Don't go backwards
