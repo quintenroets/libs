@@ -3,4 +3,4 @@ import os
 
 home = Path(os.environ["HOME"])
 docs = home / "Documents"
-scripts = home / "Scripts"
+scripts = docs / "Scripts"
