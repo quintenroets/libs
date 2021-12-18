@@ -8,7 +8,7 @@ from libs import folders
 
 class FileManager:
     default_extension = "yaml"
-    root = folders.home
+    root = folders.home / ".config" / "scripts"
 
     @classmethod
     def load(cls, *path, mode="r", folder=False, add_ext=True):
@@ -71,14 +71,14 @@ class FileManager:
 
     @classmethod
     def get_path(cls, *path, create=False, folder=False):
-        if len(path) > 1 and not path[0].startswith("/"):
+        if len(path) > 1 and not str(path[0]).startswith("/"):
             # don't replace slashes in absolute path
             path = [p.replace("/", "_") for p in path]
         else:
             path = list(path)
-        if not path[0].startswith("/"):
+        if not str(path[0]).startswith("/"):
             path.insert(0, cls.root)
-        if path[0].startswith("/home") and "." not in path[-1] and not folder:
+        if str(path[0]).startswith("/home") and "." not in path[-1] and not folder:
                 path[-1] += "." + FileManager.default_extension
 
         path = os.path.join(*path)
