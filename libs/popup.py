@@ -19,7 +19,7 @@ class Popup:
             title="Working",
             message="",
             progress_name="",
-            amount=None,
+            amount=0,
             description=False,
             show_progress_message=True,
             capture_output=False,
