@@ -27,7 +27,7 @@ class Popup:
             ):
 
         # title can be given by first argument as well
-        if isinstance(args[0], str):
+        if args isinstance(args[0], str):
             title, *args = args
         self.iterator = itertools.chain(*args)
         self.amount = amount
