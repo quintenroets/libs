@@ -3,4 +3,4 @@ try:
     from libs.popup import Popup as ProgressBar
 except:
     session_bus = None
-    from libs.cliprogress import Progress as ProgressBar
+    from libs.cliprogress import CliProgress as ProgressBar
