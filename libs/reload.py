@@ -10,7 +10,7 @@ class Reloader(Debugger):
         super().__init__(self, reload, root=root)
 
 
-def reload(root=None, auto=False):
+def reload(root=None, auto=False, verbose=False):
     """
     Reload all imported modules with files under root:
     very handy to see changes without kernel restart
@@ -24,7 +24,9 @@ def reload(root=None, auto=False):
         sys.settrace(auto_reload)
         
     else:
-        return _reload(root)
+        reloaded = _reload(root)
+        if verbose:
+            message = "\n\t".join(["Reloaded:", *reloaded])
 
 
 def _reload(root=None):

@@ -29,8 +29,15 @@ class Popup:
         # title can be given by first argument as well
         if args and isinstance(args[0], str):
             title, *args = args
-        self.iterator = itertools.chain(*args)
+        self.iterator = itertools.chain(*args) if args else None
+
         self.amount = amount
+        if self.amount == 0 and args:
+            try:
+                self.amount = sum([len(arg) for arg in args])
+            except TypeError:
+                pass
+
         self.message = message
         self.progress_name = progress_name
         self.progress_value = 0
@@ -123,12 +130,6 @@ class Popup:
             time.sleep(0.2)
 
     def __iter__(self):
-        if self.amount is None:
-            try:
-                self.amount = len(self.iterator)
-            except TypeError:
-                self.amount = 0 # Don't count progress if length not known
-
         with self:
             for item in self.iterator:
                 yield item

@@ -8,7 +8,7 @@ class Debugger():
         self.log_list = []
         
     def log(self, frame, event, arg):
-        globals_vars = frame.f_globals
+        globals_vars = frame.f_globals.copy()
         globals_vars.pop("__builtins__")
         globals_vars.pop("__cached__")
         variables = {
