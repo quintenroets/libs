@@ -78,8 +78,8 @@ class FileManager:
             path = list(path)
         if not str(path[0]).startswith("/"):
             path.insert(0, cls.root)
-        if str(path[0]).startswith("/home") and "." not in path[-1] and not folder:
-                path[-1] += "." + FileManager.default_extension
+        if "." not in path[-1] and not folder:
+            path[-1] += "." + FileManager.default_extension
 
         path = os.path.join(*path)
         if create:
