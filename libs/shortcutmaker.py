@@ -1,11 +1,14 @@
+from pathlib import Path
+
 from libs.filemanager import FileManager
 from libs.cli import Cli
 
 
 class ShortcutMaker:
     def __init__(self):
+        self.config_file = Path.home() / ".xbindkeysrc.scm"
         edge = "; -- scripts --"
-        self.header = FileManager.load(".xbindkeysrc.scm").split(edge)[0] + edge + "\n"
+        self.header = self.config_file.read_text().split(edge)[0] + edge + "\n"
         self.items = []
 
     def set_shortcuts(self):
@@ -15,7 +18,7 @@ class ShortcutMaker:
             ")"
         ])
         content = self.header + new_content
-        FileManager.save(content, ".xbindkeysrc.scm")
+        self.config_file.write_text(content)
         Cli.run("xbindkeys --poll-rc")
 
     def make_shortcut(self, hotkey, target):
