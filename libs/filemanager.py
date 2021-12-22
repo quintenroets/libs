@@ -1,7 +1,6 @@
 import os
 import json
 import yaml
-import pathlib
 import pickle
 
 from libs.cli import Cli
@@ -80,7 +79,7 @@ class FileManager:
         if not str(path[0]).startswith("/"):
             path.insert(0, cls.root)
         
-        if not isinstance(path[-1], pathlib.Path) and "." not in path[-1] and not folder:
+        if "." not in str(path[-1]) and not folder:
             path[-1] += "." + FileManager.default_extension
 
         path = os.path.join(*path)
