@@ -1,4 +1,4 @@
-from pathlib import Path
+from libs.path import Path
 import os
 
 home = Path(os.environ["HOME"])

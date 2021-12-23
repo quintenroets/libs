@@ -7,9 +7,13 @@ class Gui:
         question = f"<big>{question}</big>"
         if options is None:
             options = {"text": question}
-            return Gui.run("entry", options)
+            response = Gui.run("entry", options)
         elif isinstance(options, list):
-            return Gui.ask_options(question, options)
+            response = Gui.ask_options(question, options)
+        elif isinstance(options, dict):
+            response = Gui.ask_options(question, options.keys())
+            response = options[response]
+        return response
         
     @staticmethod
     def ask_yn(question):
