@@ -12,7 +12,8 @@ class Gui:
             response = Gui.ask_options(question, options)
         elif isinstance(options, dict):
             response = Gui.ask_options(question, options.keys())
-            response = options[response]
+            if response:
+                response = options[response]
         return response
         
     @staticmethod
