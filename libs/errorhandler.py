@@ -1,4 +1,4 @@
-from libs.filemanager import FileManager
+from libs.path import Path
 
 class ErrorHandler():
     error = False
@@ -21,20 +21,21 @@ class ErrorHandler():
     @staticmethod
     def show_error(message="", exit=True):
         import traceback
-        import os
         from libs.cli import Cli
 
         if not ErrorHandler.error:
             ErrorHandler.error = True
-            filename = FileManager.save(message, os.environ["scripts"], ".error.txt")
-            if not message:
-                with open(filename, "w") as fp:
+            path = Path.assets / ".error.txt"
+            if message:
+                path.write_text(message)
+            else:
+                with open(path, "w") as fp:
                     traceback.print_exc(file=fp)
 
-            Cli.run(f'cat {filename}; read', console=True)
+            Cli.run(f'cat {path}; read', console=True)
 
             if exit:
+                import os
                 os._exit(0)
 
-            with open(filename) as fp:
-                return fp.read()
+            return path.read_text()
