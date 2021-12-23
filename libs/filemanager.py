@@ -20,7 +20,7 @@ class FileManager:
         try:
             with open(path, mode) as fp:
                 if path.endswith(".yaml"):
-                    content = yaml.load(fp, Loader=yaml.FullLoader)
+                    content = yaml.load(fp, Loader=yaml.SafeLoader)
                 elif path.endswith(".json"):
                     content = json.load(fp)
                 elif path.endswith(".pkl"):

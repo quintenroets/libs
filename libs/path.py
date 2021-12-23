@@ -49,7 +49,7 @@ def _load(path: Path, *subnames):
     path = path.subpath(*subnames, suffix=yaml_suffix)
     try:
         with open(path) as fp:
-            content = yaml.load(fp, Loader=yaml.FullLoader)
+            content = yaml.load(fp, Loader=yaml.SafeLoader)
     except FileNotFoundError:
         content = {}
 
