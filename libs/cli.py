@@ -33,6 +33,10 @@ class Cli:
         if "check" not in kwargs and wait and not console:
             kwargs["check"] = True
 
+        if "pwd" in kwargs:
+            pwd = kwargs.pop("pwd")
+            commands = itertools.chain([f'cd "{pwd}"'], commands)
+
         if not wait:
             # add empty element to finish total command with &
             commands = [f"nohup {c} &>/dev/null " for c in commands] + [""]
