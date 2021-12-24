@@ -20,7 +20,6 @@ class Cli:
             )
             if not is_open:
                 time.sleep(0.5)
-                
             Cli.run(f"jumpapp -w {console}") # always focus new tabs but wait if first tab
                 
         return result
