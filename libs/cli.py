@@ -12,7 +12,7 @@ class Cli:
         chunck_size = 1 if "console" in kwargs and len(commands) > 1 else 100
         result = [Cli._run(commands[i: i + chunck_size], **kwargs) for i in range(0, len(commands), chunck_size)]
             
-        if "console" in kwargs:
+        if kwargs.get("console"):
             console = "konsole"
             is_open = Cli.get(
                 f"wmctrl -l | grep ' '$(xdotool get_desktop)' ' | grep {console.capitalize()}",
