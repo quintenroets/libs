@@ -68,7 +68,7 @@ def _find(path: Path, condition=None, exclude=None, recurse_on_match=False, foll
         def exclude(_):
             return False
 
-    to_traverse = [path]
+    to_traverse = [path] if path.exists() else []
     while to_traverse:
         path = to_traverse.pop(0)
         
