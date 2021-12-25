@@ -52,27 +52,36 @@ def _load(path: Path, *names):
     return content
 
 
-def _find(path: Path, condition=None, exclude=None, recurse_on_match=False, follow_symlinks=True):
+def _find(path: Path, condition=None, exclude=None, recurse_on_match=False, follow_symlinks=True, only_folders=False):
     """
     Find all subpaths under path that match condition
+
+    only_folders can be used for efficiency reasons
     """
     if condition is None:
+        recurse_on_match = True
         def condition(_):
             return True
+
+    if exclude is None:
+        def exclude(_):
+            return False
 
     to_traverse = [path]
     while to_traverse:
         path = to_traverse.pop(0)
         
-        if exclude is None or not exclude(path):
-            match = condition(path) if condition is not None else True
+        if not exclude(path):
+            match = condition(path)
             if match:
                 yield path
+
             if not match or recurse_on_match:
-                for child in path.iterdir():
-                    if child.is_dir():
+                if only_folders or path.is_dir():
+                    for child in path.iterdir():
                         if follow_symlinks or not child.is_symlink():
-                            to_traverse.append(child)
+                            if not only_folders or child.is_dir():
+                                to_traverse.append(child)
 
 
 Path.subpath = _subpath
