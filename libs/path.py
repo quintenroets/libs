@@ -52,7 +52,7 @@ def _load(path: Path, *names):
     return content
 
 
-def _find(path: Path, condition=None, exclude_condition=None, recurse_on_match=False, follow_symlinks=True):
+def _find(path: Path, condition=None, exclude=None, recurse_on_match=False, follow_symlinks=True):
     """
     Find all subpaths under path that match condition
     """
@@ -64,7 +64,7 @@ def _find(path: Path, condition=None, exclude_condition=None, recurse_on_match=F
     while to_traverse:
         path = to_traverse.pop(0)
         
-        if exclude_condition is None or not exclude_condition(path):
+        if exclude is None or not exclude(path):
             match = condition(path) if condition is not None else True
             if match:
                 yield path
