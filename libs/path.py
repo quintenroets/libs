@@ -8,9 +8,10 @@ yaml_suffix = ".yaml"
 Monkey-patch extra functionality onto pathlib
 """
 
-Path.docs = Path.home() / "Documents"
+Path.home = Path.home()
+Path.docs = Path.home / "Documents"
 Path.scripts = Path.docs / "Scripts"
-Path.assets = Path.home() / ".config" / "scripts"
+Path.assets = Path.home / ".config" / "scripts"
 
 
 def _subpath(path: Path, *names, suffix=None):
