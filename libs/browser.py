@@ -2,21 +2,20 @@ from selenium.webdriver import Chrome, ChromeOptions
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-import json
 import time
-import os
-import subprocess
 
+from libs.cli import Cli
 from libs.filemanager import FileManager
+from libs.path import Path
 
 class Browser(Chrome):
     def load_cookies(self):
-        cookies = FileManager.load(self.cookies_path)
+        cookies = self.cookies_path.load()
         for cookie in cookies:
             self.add_cookie(cookie)
 
-    def __init__(self, headless=True, cookies_path=None, base_url=None, logging=False):
-        self.cookies_path = cookies_path
+    def __init__(self, headless=False, cookies_path=None, base_url=None, logging=False):
+        self.cookies_path = Path(cookies_path)
         self.base_url = base_url
         if self.base_url and not self.base_url.endswith("/"):
             self.base_url = self.base_url + "/"
@@ -26,7 +25,7 @@ class Browser(Chrome):
         if headless:
             chrome_options.add_argument("headless")
 
-        path = subprocess.check_output("which chromium", shell=True).decode().strip() + ".chromedriver"
+        path = Cli.get("which chromium") + ".chromedriver"
         if logging:
             capabilities = DesiredCapabilities.CHROME
             capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
@@ -48,7 +47,7 @@ class Browser(Chrome):
                 self.get(self.base_url)
 
             cookies = self.get_cookies()
-            FileManager.save(cookies, self.cookies_path)
+            self.cookies_path.save(cookies)
 
         self.close()
         self.quit()
