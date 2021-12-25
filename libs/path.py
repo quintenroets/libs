@@ -13,24 +13,22 @@ Path.scripts = Path.docs / "Scripts"
 Path.assets = Path.home() / ".config" / "scripts"
 
 
-def _subpath(path: Path, *subnames, suffix=None):
+def _subpath(path: Path, *names, suffix=None):
     """
     Returns new path with subnames and suffix added
     """
-    for name in subnames:
+    for name in names:
         path /= name
     if suffix is not None and path.suffix != suffix:
         path = path.with_suffix(suffix)
     return path
 
-Path.subpath = _subpath
 
-
-def _save(path: Path, content, *subnames):
+def _save(path: Path, content, *names):
     """
     Exports content to path in yaml format
     """
-    path = path.subpath(*subnames, suffix=yaml_suffix)
+    path = path.subpath(*names, suffix=yaml_suffix)
     try:
         with open(path, "w") as fp:
             res = yaml.dump(content, fp)
@@ -39,14 +37,12 @@ def _save(path: Path, content, *subnames):
         res = path.save(content)
     return res
 
-Path.save = _save
 
-
-def _load(path: Path, *subnames):
+def _load(path: Path, *names):
     """
     Load content from path in yaml format
     """
-    path = path.subpath(*subnames, suffix=yaml_suffix)
+    path = path.subpath(*names, suffix=yaml_suffix)
     try:
         with open(path) as fp:
             content = yaml.load(fp, Loader=yaml.SafeLoader)
@@ -55,4 +51,29 @@ def _load(path: Path, *subnames):
 
     return content
 
+
+def _find(path: Path, condition=None, recurse_on_match=False, follow_symlinks=True):
+    """
+    Find all subpaths under path that match condition
+    """
+    if condition is None:
+        def condition(_):
+            return True
+
+    to_traverse = [path]
+    while to_traverse:
+        path = to_traverse.pop(0)
+        match = condition(path)
+        if match:
+            yield path
+        if not match or recurse_on_match:
+            for child in path.iterdir():
+                if child.is_dir():
+                    if follow_symlinks or not child.is_symlink():
+                        to_traverse.append(child)
+
+
+Path.subpath = _subpath
+Path.save = _save
 Path.load = _load
+Path.find = _find
