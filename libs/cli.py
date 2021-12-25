@@ -104,8 +104,8 @@ def main():
     from libs.errorhandler import ErrorHandler
     
     with ErrorHandler():
-        command = " ".join(sys.argv[1:])
-        Cli.run(command, console=True)
+        commands = sys.argv[1:]
+        Cli.run(commands, console=True)
 
 if __name__ == "__main__":
     main()
