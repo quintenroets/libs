@@ -5,6 +5,8 @@ import sys
 import time
 import types
 
+from libs.errorhandler import ErrorHandler
+
 class Cli:
     @staticmethod
     def run(*commands, **kwargs):
@@ -101,8 +103,6 @@ class Cli:
         return args
     
 def main():
-    from libs.errorhandler import ErrorHandler
-    
     with ErrorHandler():
         commands = sys.argv[1:]
         Cli.run(commands, console=True)
