@@ -13,6 +13,8 @@ Path.docs = Path.home / "Documents"
 Path.scripts = Path.docs / "Scripts"
 Path.assets = Path.home / ".config" / "scripts"
 
+Path.trusted = False # property can be set by projects that use trusted config files
+
 
 def _subpath(path: Path, *names, suffix=None):
     """
@@ -39,14 +41,14 @@ def _save(path: Path, content, *names):
     return res
 
 
-def _load(path: Path, *names, trusted=False):
+def _load(path: Path, *names):
     """
     Load content from path in yaml format
     """
     path = path.subpath(*names, suffix=yaml_suffix)
     try:
         with open(path) as fp:
-            loader = yaml.CLoader if trusted else yaml.SafeLoader # unsafe Cloader is much faster
+            loader = yaml.CLoader if Path.trusted else yaml.SafeLoader # unsafe Cloader is much faster
             content = yaml.load(fp, Loader=loader)
     except FileNotFoundError:
         content = {}
