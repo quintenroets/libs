@@ -32,21 +32,22 @@ def _save(path: Path, content, *names):
     path = path.subpath(*names, suffix=yaml_suffix)
     try:
         with open(path, "w") as fp:
-            res = yaml.dump(content, fp)
+            res = yaml.dump(content, fp, Dumper=yaml.CDumper) # CDumper much faster
     except FileNotFoundError:
         path.touch()
         res = path.save(content)
     return res
 
 
-def _load(path: Path, *names):
+def _load(path: Path, *names, trusted=False):
     """
     Load content from path in yaml format
     """
     path = path.subpath(*names, suffix=yaml_suffix)
     try:
         with open(path) as fp:
-            content = yaml.load(fp, Loader=yaml.SafeLoader)
+            loader = yaml.CLoader if trusted else yaml.SafeLoader # unsafe Cloader is much faster
+            content = yaml.load(fp, Loader=loader)
     except FileNotFoundError:
         content = {}
 
