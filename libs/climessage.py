@@ -8,7 +8,7 @@ class CliMessage:
     def __exit__(self, exception_type, exception_value, exception_traceback):
         print(" " * len(self.message), end="\r")
 
-def ask(question, question, **choice_mappers):
+def ask(question, **choice_mappers):
     if not choice_mappers:
         choice_mappers = {
             True: ["", "yes", "y"],
