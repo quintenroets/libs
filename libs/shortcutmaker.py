@@ -1,4 +1,4 @@
-from pathlib import Path
+from libs.path import Path
 
 from libs.filemanager import FileManager
 from libs.cli import Cli
@@ -6,7 +6,7 @@ from libs.cli import Cli
 
 class ShortcutMaker:
     def __init__(self):
-        self.config_file = Path.home() / ".xbindkeysrc.scm"
+        self.config_file = Path.home / ".xbindkeysrc.scm"
         edge = "; -- scripts --"
         self.header = self.config_file.read_text().split(edge)[0] + edge + "\n"
         self.items = []
