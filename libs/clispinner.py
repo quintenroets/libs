@@ -20,3 +20,4 @@ class CliSpinner:
         self.quit = True
         print("\r", end="")
         print(" " * (len(self.message) + 5), end="\r")
+        print("", end="")
