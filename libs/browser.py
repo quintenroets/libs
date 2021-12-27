@@ -15,7 +15,7 @@ class Browser(Chrome):
             self.add_cookie(cookie)
 
     def __init__(self, headless=True, cookies_path=None, base_url=None, logging=False):
-        self.cookies_path = Path(cookies_path)
+        self.cookies_path = Path(cookies_path) if cookies_path else None
         self.base_url = base_url
         if self.base_url and not self.base_url.endswith("/"):
             self.base_url = self.base_url + "/"
