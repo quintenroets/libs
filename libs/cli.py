@@ -6,6 +6,7 @@ import time
 import types
 
 from libs.errorhandler import ErrorHandler
+from libs.path import Path
 
 class Cli:
     @staticmethod
@@ -102,6 +103,11 @@ class Cli:
             elif isinstance(arg, types.GeneratorType):
                 args = list(arg)
         return args
+    
+    @staticmethod
+    def run_exe(path):
+        path = Path(path)
+        return Cli.run(f"./{path.name}", pwd=path.parent)
     
 def main():
     with ErrorHandler():
