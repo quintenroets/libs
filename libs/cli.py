@@ -30,6 +30,7 @@ class Cli:
 
     @staticmethod
     def _run(commands, wait=True, console=False, confirm=False, debug=False, **kwargs):
+        commands = list(commands) # we want to be able to loop multiple times
         if "capture_output" not in kwargs:
             kwargs["stdout"] = sys.stdout
 
@@ -38,7 +39,7 @@ class Cli:
 
         if "pwd" in kwargs:
             pwd = kwargs.pop("pwd")
-            commands = itertools.chain([f'cd "{pwd}"'], commands)
+            commands.insert(0, f'cd "{pwd}"')
 
         if not wait:
             # add empty element to finish total command with &
@@ -49,10 +50,10 @@ class Cli:
             pw = os.environ.get("pw")
             if pw is not None:
                 start_command = f"echo {pw} | sudo -S echo "" &> /dev/null"
-                commands = itertools.chain([start_command], commands)
+                commands.insert(0, start_command)
                 
         if confirm:
-            commands = itertools.chain(commands, ["echo $'\nPress enter to quit.'", "read"])
+            commands += ["echo $'\nPress enter to quit.'", "read"]
 
         joiner = "; " if wait else "& "
         commands = [os.environ["SHELL"], "-c", joiner.join(commands)]
