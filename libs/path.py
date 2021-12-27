@@ -86,10 +86,13 @@ def _find(path: Path, condition=None, exclude=None, recurse_on_match=False, foll
 
             if not match or recurse_on_match:
                 if only_folders or path.is_dir():
-                    for child in path.iterdir():
-                        if follow_symlinks or not child.is_symlink():
-                            if not only_folders or child.is_dir():
-                                to_traverse.append(child)
+                    try:
+                        for child in path.iterdir():
+                            if follow_symlinks or not child.is_symlink():
+                                if not only_folders or child.is_dir():
+                                    to_traverse.append(child)
+                    except PermissionError:
+                        pass # skip folders that do not allow listing
 
 
 Path.subpath = _subpath
