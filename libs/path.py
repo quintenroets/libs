@@ -16,6 +16,10 @@ Path.assets = Path.home / ".config" / "scripts"
 Path.trusted = False # property can be set by projects that use trusted config files
 
 
+def _is_root(path: Path):
+    return path.stat().st_uid == 0
+
+
 def _subpath(path: Path, *names, suffix=None):
     """
     Returns new path with subnames and suffix added
@@ -92,3 +96,4 @@ Path.subpath = _subpath
 Path.save = _save
 Path.load = _load
 Path.find = _find
+Path.is_root = _is_root
