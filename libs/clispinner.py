@@ -2,6 +2,7 @@ from progress.spinner import Spinner
 from threading import Thread
 import time
 
+Spinner.hide_cursor = False
 class CliSpinner:
     def __init__(self, message=None):
         self.message = f"{message}.. "
@@ -20,4 +21,3 @@ class CliSpinner:
         self.quit = True
         print("\r", end="")
         print(" " * (len(self.message) + 5), end="\r")
-        print("", end="")
