@@ -17,6 +17,8 @@ Path.trusted = False # property can be set by projects that use trusted config f
 
 
 def _is_root(path: Path):
+    while not path.exists():
+        path = path.parent
     return path.stat().st_uid == 0
 
 
