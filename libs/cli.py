@@ -9,6 +9,8 @@ from libs.errorhandler import ErrorHandler
 from libs.path import Path
 
 class Cli:
+    Error = subprocess.CalledProcessError
+    
     @staticmethod
     def run(*commands, **kwargs):
         commands = Cli.check_iterable(*commands)
