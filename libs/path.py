@@ -24,11 +24,11 @@ def _is_root(path: Path):
 
 def _write(path: Path, content):
     if isinstance(content, str):
-        Path.write_text(content)
+        path.write_text(content)
     elif isinstance(content, bytes):
-        Path.write_bytes(content)
+        path.write_bytes(content)
     else:
-        Path.save(content)
+        path.save(content)
 
 
 def _subpath(path: Path, *names, suffix=None):
