@@ -8,10 +8,10 @@ yaml_suffix = ".yaml"
 Monkey-patch extra functionality onto pathlib
 """
 
-Path.home = Path.home()
-Path.docs = Path.home / "Documents"
+Path.HOME = Path.home()
+Path.docs = Path.HOME / "Documents"
 Path.scripts = Path.docs / "Scripts"
-Path.assets = Path.home / ".config" / "scripts"
+Path.assets = Path.HOME / ".config" / "scripts"
 
 Path.trusted = False # property can be set by projects that use trusted config files
 

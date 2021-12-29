@@ -1,5 +1,5 @@
 import importlib
-from pathlib import Path
+from libs.path import Path
 import sys
 
 from libs.debug import Debugger
@@ -16,7 +16,7 @@ def reload(root=None, auto=False, verbose=False):
     very handy to see changes without kernel restart
     """
     if root is None:
-        root = Path.home()
+        root = Path.HOME
     
     if auto:
         def auto_reload(*args):
