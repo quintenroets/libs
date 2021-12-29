@@ -11,7 +11,7 @@ Monkey-patch extra functionality onto pathlib
 Path.HOME = Path.home()
 Path.docs = Path.HOME / "Documents"
 Path.scripts = Path.docs / "Scripts"
-Path.assets = Path.HOME / ".config" / "scripts"
+Path.assets_root = Path.HOME / ".config" / "scripts"
 
 Path.trusted = False # property can be set by projects that use trusted config files
 
