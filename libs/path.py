@@ -11,7 +11,7 @@ Monkey-patch extra functionality onto pathlib
 Path.HOME = Path.home()
 Path.docs = Path.HOME / "Documents"
 Path.scripts = Path.docs / "Scripts"
-Path.assets_root = Path.HOME / ".config" / "scripts"
+Path.assets = Path.HOME / ".config" / "scripts"
 
 Path.trusted = False # property can be set by projects that use trusted config files
 
@@ -20,6 +20,15 @@ def _is_root(path: Path):
     while not path.exists():
         path = path.parent
     return path.stat().st_uid == 0
+
+
+def _write(path: Path, content):
+    if isinstance(content, str):
+        Path.write_text(content)
+    elif isinstance(content, bytes):
+        Path.write_bytes(content)
+    else:
+        Path.save(content)
 
 
 def _subpath(path: Path, *names, suffix=None):
@@ -97,8 +106,9 @@ def _find(path: Path, condition=None, exclude=None, recurse_on_match=False, foll
                         pass # skip folders that do not allow listing
 
 
+Path.is_root = _is_root
+Path.write = _write
 Path.subpath = _subpath
 Path.save = _save
 Path.load = _load
 Path.find = _find
-Path.is_root = _is_root
