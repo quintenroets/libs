@@ -56,7 +56,7 @@ class Cli:
                 commands.insert(0, start_command)
                 
         if confirm:
-            commands += ["echo $'\nPress enter to quit.'", "read"]
+            commands += ["echo $'\Exit? [Y/n]'", "read"]
 
         joiner = "; " if wait else "& "
         commands = [os.environ["SHELL"], "-c", joiner.join(commands)]
@@ -118,7 +118,7 @@ class Cli:
 def main():
     with ErrorHandler():
         commands = sys.argv[1:]
-        Cli.run(commands, console=True)
+        Cli.run(commands, console=True, confirm=True)
 
 if __name__ == "__main__":
     main()
