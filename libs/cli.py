@@ -120,7 +120,8 @@ class Cli:
 def main():
     with ErrorHandler():
         commands = " ".join(sys.argv[1:])
-        Cli.run(f"clirun {commands}", console=True)
+        print(f"clirun {commands}")
+        Cli.run(f'clirun "{commands}"', console=True)
 
 
 def clirun():
