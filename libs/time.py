@@ -6,6 +6,7 @@ from dateutil import tz
 from libs.parser import Parser
 from libs.cli import Cli
 
+
 def to_string(utc_string):
     string = Parser.rbetween(utc_string, None, ":")
 
