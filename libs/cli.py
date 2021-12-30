@@ -56,7 +56,7 @@ class Cli:
                 commands.insert(0, start_command)
                 
         if confirm:
-            commands += ["echo $'\Exit? [Y/n]'", "read"]
+            commands += ["echo $'\nExit? [Y/n]'", "read"]
 
         joiner = "; " if wait else "& "
         commands = [os.environ["SHELL"], "-c", joiner.join(commands)]
