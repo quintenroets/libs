@@ -104,6 +104,10 @@ def _find(path: Path, condition=None, exclude=None, recurse_on_match=False, foll
                                     to_traverse.append(child)
                     except PermissionError:
                         pass # skip folders that do not allow listing
+                    
+                    
+def _mtime(path: Path):
+    return int(path.stat().st_mtime) # no huge precision needed
 
 
 Path.is_root = _is_root
@@ -112,3 +116,4 @@ Path.subpath = _subpath
 Path.save = _save
 Path.load = _load
 Path.find = _find
+Path.mtime = _mtime
