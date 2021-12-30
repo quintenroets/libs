@@ -111,6 +111,10 @@ class Cli:
         path = Path(path)
         return Cli.run(f"./{path.name}", pwd=path.parent)
     
+    @staticmethod
+    def set_title(title):
+        return Cli.run(f'qdbus org.kde.konsole $KONSOLE_DBUS_SESSION setTitle 1 "{title}"')
+    
 def main():
     with ErrorHandler():
         commands = sys.argv[1:]
