@@ -22,7 +22,8 @@ setup(
     install_requires=read("requirements.txt"),
     entry_points={
         "console_scripts": [
-            "konsolerun = libs.cli:main"
+            "konsolerun = libs.cli:main",
+            "clirun = libs.cli:clirun"
         ]},
 )
 

@@ -6,6 +6,7 @@ import time
 import types
 
 from libs.errorhandler import ErrorHandler
+from libs.output_copy import Output
 from libs.path import Path
 
 class Cli:
@@ -56,7 +57,7 @@ class Cli:
                 commands.insert(0, start_command)
                 
         if confirm:
-            commands += ["echo -n $'\nExit? [Y/n]'", "read"]
+            commands += ["echo -n $'Exit? [Y/n]'", "read"]
 
         joiner = "; " if wait else "& "
         commands = [os.environ["SHELL"], "-c", joiner.join(commands)]
@@ -114,11 +115,20 @@ class Cli:
     @staticmethod
     def set_title(title):
         return Cli.run(f'qdbus org.kde.konsole $KONSOLE_DBUS_SESSION setTitle 1 "{title}"')
-    
+
+
 def main():
     with ErrorHandler():
-        commands = sys.argv[1:]
-        Cli.run(commands, console=True, confirm=True)
+        commands = " ".join(sys.argv[1:])
+        Cli.run(f"clirun {commands}", console=True)
+
+
+def clirun():
+    with Output() as o:
+        Cli.run(sys.argv[1:])
+        
+    if not(str(o)):
+        input("Everything clean.\nExit? [Y/n]")
 
 if __name__ == "__main__":
     main()
