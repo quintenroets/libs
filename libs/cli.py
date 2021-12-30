@@ -119,17 +119,9 @@ class Cli:
 
 def main():
     with ErrorHandler():
-        commands = " ".join(sys.argv[1:])
-        print(f"clirun {commands}")
-        Cli.run(f'clirun "{commands}"', console=True)
+        commands = sys.argv[1:]
+        Cli.run(commands, console=True)
 
-
-def clirun():
-    with Output() as o:
-        Cli.run(sys.argv[1:])
-        
-    if not(str(o)):
-        input("Everything clean.\nExit? [Y/n]")
 
 if __name__ == "__main__":
     main()
