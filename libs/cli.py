@@ -62,8 +62,7 @@ class Cli:
         joiner = "; " if wait else "& "
         commands = [os.environ["SHELL"], "-c", joiner.join(commands)]
         if console or debug:
-            console = "konsole"
-            commands = [console, "--new-tab", "-e"] + commands
+            commands = ["konsole", "--new-tab", "-e"] + commands
             if debug:
                 commands.insert(commands.index(console) + 1, "--noclose")
         

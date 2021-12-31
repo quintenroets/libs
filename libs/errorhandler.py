@@ -21,6 +21,7 @@ class ErrorHandler():
         # most of the time no error => save time by only importing on error
         
         import os
+        import time
         import traceback
 
         from libs.cli import Cli
@@ -37,7 +38,7 @@ class ErrorHandler():
         Cli.run(f'cat {path}; read', console=True)
 
         if exit:
-            time.sleep(0.5) # allow error message command to start
+            time.sleep(0.5) # allow error message command to start before terminating
             os._exit(0)
 
         return path.read_text()
