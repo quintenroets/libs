@@ -7,7 +7,7 @@ import types
 
 from libs.errorhandler import ErrorHandler
 from libs.output_copy import Output
-from libs.path import Path
+
 
 class Cli:
     Error = subprocess.CalledProcessError
@@ -108,13 +108,13 @@ class Cli:
         return args
     
     @staticmethod
-    def run_exe(path):
-        path = Path(path)
-        return Cli.run(f"./{path.name}", pwd=path.parent)
-    
-    @staticmethod
     def set_title(title):
         return Cli.run(f'qdbus org.kde.konsole $KONSOLE_DBUS_SESSION setTitle 1 "{title}"')
+
+    @staticmethod
+    def run_exe(path):
+        with ErrorHandler():
+            Cli.run(f"./{path.name}", pwd=path.parent)
 
 
 def main():

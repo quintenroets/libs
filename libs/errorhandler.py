@@ -1,5 +1,3 @@
-from libs.path import Path
-
 class ErrorHandler():
     error = False
 
@@ -11,7 +9,7 @@ class ErrorHandler():
 
     def __exit__(self, type, value, tb):
         if tb:
-            if type != KeyboardInterrupt:
+            if type != KeyboardInterrupt and not ErrorHandler.error:
                 ErrorHandler.show_error()
             if self.obj is not None:
                 self.obj.crashed = str(tb)
@@ -20,22 +18,26 @@ class ErrorHandler():
 
     @staticmethod
     def show_error(message="", exit=True):
+        # most of the time no error => save time by only importing on error
+        
+        import os
         import traceback
+
         from libs.cli import Cli
+        from libs.path import Path
+        
+        ErrorHandler.error = True
+        path = Path.assets / ".error.txt"
+        if message:
+            path.write_text(message)
+        else:
+            with open(path, "w") as fp:
+                traceback.print_exc(file=fp)
 
-        if not ErrorHandler.error:
-            ErrorHandler.error = True
-            path = Path.assets / ".error.txt"
-            if message:
-                path.write_text(message)
-            else:
-                with open(path, "w") as fp:
-                    traceback.print_exc(file=fp)
+        Cli.run(f'cat {path}; read', console=True)
 
-            Cli.run(f'cat {path}; read', console=True)
+        if exit:
+            time.sleep(0.5) # allow error message command to start
+            os._exit(0)
 
-            if exit:
-                import os
-                os._exit(0)
-
-            return path.read_text()
+        return path.read_text()
