@@ -33,7 +33,7 @@ class Cli:
         return result
 
     @staticmethod
-    def _run(commands, wait=True, console=False, confirm=False, debug=False, **kwargs):
+    def _run(commands, wait=True, console=False, confirm=False, debug=False, shell=False, **kwargs):
         commands = list(commands) # we want to be able to loop multiple times
         if "capture_output" not in kwargs:
             kwargs["stdout"] = sys.stdout
@@ -60,7 +60,11 @@ class Cli:
             commands += ["echo -n $'Exit? [Y/n]'", "read"]
 
         joiner = "; " if wait else "& "
-        commands = [os.environ["SHELL"], "-c", joiner.join(commands)]
+        commands = [joiner.join(commands)]
+        
+        if shell or any([bash_symbol in commands[0] for bash_symbol in " ;$"]):
+            commands = [os.environ["SHELL"], "-c", joiner.join(commands)]
+        
         if console or debug:
             commands = ["konsole", "--new-tab", "-e"] + commands
             if debug:
