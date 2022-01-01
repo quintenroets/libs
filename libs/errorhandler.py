@@ -35,10 +35,11 @@ class ErrorHandler():
             with open(path, "w") as fp:
                 traceback.print_exc(file=fp)
 
-        Cli.run(f'cat {path}; read', console=True, shell=True)
+        p = Cli.run(f'cat {path}; read', console=True, shell=True)
 
         if exit:
-            time.sleep(0.5) # allow error message command to start before terminating
-            os._exit(0)
+            with p:
+                p.communicate() # make sure error message subprocess has started before terminating original process
+                os._exit(0)
 
         return path.read_text()

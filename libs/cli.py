@@ -17,6 +17,9 @@ class Cli:
         commands = Cli.check_iterable(*commands)
         chunck_size = 1 if "console" in kwargs and len(commands) > 1 else 100
         result = [Cli._run(commands[i: i + chunck_size], **kwargs) for i in range(0, len(commands), chunck_size)]
+        
+        if "capture_output" not in kwargs and len(result) == 1:
+            result = result[0]
             
         if kwargs.get("console") and commands:
             # only activate console if console kwargs True and if commands have effectively run
@@ -63,7 +66,7 @@ class Cli:
         commands = [joiner.join(commands)]
         
         if shell or any([bash_symbol in commands[0] for bash_symbol in " ;$"]):
-            commands = [os.environ["SHELL"], "-c", joiner.join(commands)]
+            commands = [os.environ["SHELL"], "-c"] + commands
         
         if console or debug:
             commands = ["konsole", "--new-tab", "-e"] + commands
