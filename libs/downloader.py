@@ -1,27 +1,23 @@
 import integv
+from pathlib import Path
 import requests
 import urllib
 from tqdm import tqdm
-
-from libs.path import Path
 
 
 class Downloader:
     @staticmethod
     def download(url, dest=None, retries=4, **kwargs):
-        if dest is None:
-            dest = Downloader.create_dest(url)
-                
-        temp_dest = dest.with_suffix(dest.suffix + ".part")
+        dest, temp_dest = Downloader.create_dests(dest, url)
         
         progress = tqdm(
             desc=f"Downloading {dest.name}", 
             initial=temp_dest.size(), 
             unit="B", 
-            unit_scale=True, 
+            unit_scale=True,
             leave=False,
-            unit_divisor=1024, 
-            dynamic_ncols=True, 
+            unit_divisor=1024,
+            dynamic_ncols=True,
             bar_format='{l_bar}{bar}| {n_fmt}B/{total_fmt}B [{elapsed}<{remaining}, ' '{rate_fmt}{postfix}]'
             )
         
@@ -29,17 +25,16 @@ class Downloader:
             for i in range(retries + 1):
                 try:
                     Downloader._download(url, temp_dest, progress, **kwargs)
-                    break
                 except requests.exceptions.RequestException:
                     if i == retries:
                         raise requests.exceptions.RequestException
                     else:
                         progress.set_description(f"Downloading {dest.name} (retry {i+1}/{retries}")
-                                                 
-        progress.clear()
-        
-        if Downloader.check_content(temp_dest):
-            temp_dest.rename(dest)
+                else:
+                    succes = Downloader.check_content(temp_dest)
+                    if succes:
+                        temp_dest.rename(dest)
+                    return succes
 
     @staticmethod
     def _download(url, dest, progress, headers={}, chunck_size=None, timeout=10, session=None, callback=None, **kwargs):
@@ -94,8 +89,10 @@ class Downloader:
         return succes
 
     @staticmethod
-    def create_dest(url):
-        path = urllib.parse.urlparse(url).path
-        dest = urllib.parse.unquote(path).split("/")[-1]
+    def create_dests(dest, url):
+        if dest is None:
+            path = urllib.parse.urlparse(url).path
+            dest = urllib.parse.unquote(path).split("/")[-1]
         dest = Path(dest)
-        return dest
+        temp_dest = dest.with_suffix(dest.suffix + ".part")
+        return dest, temp_dest
