@@ -24,6 +24,8 @@ class Downloader:
                     break
                 except requests.exceptions.RequestException:
                     progress.set_description(f"Downloading {dest.name} (retry {i}/{max_tries - 1}")
+                    if i + 1 == max_tries:
+                        raise requests.exceptions.RequestException
         
         if Downloader.check_content(temp_dest):
             temp_dest.rename(dest)
@@ -33,19 +35,27 @@ class Downloader:
         if session is None:
             session = requests
         
-        old_filesize = dest.size()
-        headers["Range"] = f"bytes={old_filesize}-"
+        headers["Range"] = f"bytes={dest.size()}-"
         
         stream = session.get(url, headers=headers, timeout=timeout, stream=True)
+        if stream.status_code == 416:
+            headers.pop("Range")
+            stream = session.get(url, headers=headers, timeout=timeout, stream=True)
+            download_size = int(stream.headers["Content-Length"])
+            start = 0
+            end = download_size - 1
         
-        if "Content-Range" not in stream.headers:
-            raise requests.exceptions.RequestException
-        
-        content_range = stream.headers.get("Content-Range")
-        start = int(content_range.split(" ")[1].split("-")[0]) if content_range else 0
+        else:
+            if "Content-Range" not in stream.headers:
+                raise requests.exceptions.RequestException
+            
+            content_range = stream.headers["Content-Range"].split(" ")[1]
+            start_end, download_size = content_range.split("/")
+            start, end = start_end.split("-")
+            start, end, download_size = int(start), int(end), int(download_size)
         
         if progress.total is None:
-            progress.total = int(stream.headers["Content-Length"])
+            progress.total = download_size
             progress.update(start)
             if callback:
                 callback(start /progress.total)
@@ -58,8 +68,7 @@ class Downloader:
                 if callback:
                     callback(len(chunck)/progress.total)
 
-        download_size = int(stream.headers["Content-Length"])
-        if download_size != dest.size() - old_filesize:
+        if start + download_size != dest.size():
             raise requests.exceptions.RequestException
 
     @staticmethod
