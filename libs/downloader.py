@@ -65,6 +65,7 @@ class Downloader:
             progress.total = download_size
             
         if dest.size() > start:
+            start = 0
             progress.update(-dest.size())
             if callback:
                 callback(-dest.size() / progress.total)
