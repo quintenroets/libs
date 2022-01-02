@@ -1,8 +1,9 @@
 import integv
-from pathlib import Path
 import requests
 import urllib
 from tqdm import tqdm
+
+from libs.path import Path
 
 
 class Downloader:
