@@ -21,7 +21,6 @@ class ErrorHandler():
         # most of the time no error => save time by only importing on error
         
         import os
-        import time
         import traceback
 
         from libs.cli import Cli
