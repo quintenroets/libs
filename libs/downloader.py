@@ -78,7 +78,7 @@ class Downloader:
                 if callback:
                     callback(len(chunck) / progress.total)
 
-        if start + download_size != dest.size():
+        if download_size != dest.size():
             raise requests.exceptions.RequestException
 
     @staticmethod
