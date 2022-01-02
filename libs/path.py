@@ -110,6 +110,14 @@ def _mtime(path: Path):
     return int(path.stat().st_mtime) # no huge precision needed
 
 
+def _size(path: Path):
+    try:
+        size = path.stat().st_size
+    except FileNotFoundError:
+        size = 0
+    return size
+
+
 Path.is_root = _is_root
 Path.write = _write
 Path.subpath = _subpath
@@ -117,3 +125,4 @@ Path.save = _save
 Path.load = _load
 Path.find = _find
 Path.mtime = _mtime
+Path.size = _size
