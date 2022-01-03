@@ -13,7 +13,7 @@ class Downloader:
         
         progress = tqdm(
             desc=f"Downloading {dest.name}", 
-            initial=temp_dest.size(), 
+            initial=temp_dest.size(),
             unit="B", 
             unit_scale=True,
             leave=False,
