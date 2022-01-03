@@ -1,5 +1,5 @@
 import importlib
-from libs.path import Path
+from path import Path
 import sys
 
 from libs.debug import Debugger

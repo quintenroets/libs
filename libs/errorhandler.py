@@ -24,7 +24,7 @@ class ErrorHandler():
         import traceback
 
         from libs.cli import Cli
-        from spathlib import Path
+        from path import Path
         
         ErrorHandler.error = True
         path = Path.assets / ".error.txt"

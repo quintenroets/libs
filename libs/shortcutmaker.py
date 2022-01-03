@@ -1,6 +1,5 @@
-from libs.path import Path
+from path import Path
 
-from libs.filemanager import FileManager
 from libs.cli import Cli
 
 

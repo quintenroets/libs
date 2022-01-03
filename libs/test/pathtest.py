@@ -1,4 +1,4 @@
-from libs.path import Path
+from path import Path
 from libs.timer import Timer
 
 with Timer():
