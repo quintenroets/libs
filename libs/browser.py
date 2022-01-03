@@ -5,8 +5,8 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import time
 
 from libs.cli import Cli
-from libs.filemanager import FileManager
-from libs.path import Path
+from spathlib import Path
+
 
 class Browser(Chrome):
     def load_cookies(self):
