@@ -3,7 +3,7 @@ import requests
 import urllib
 from tqdm import tqdm
 
-from path import Path
+from plib import Path
 
 
 class Downloader:

@@ -5,7 +5,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import time
 
 from libs.cli import Cli
-from path import Path
+from plib import Path
 
 
 class Browser(Chrome):

@@ -1,4 +1,4 @@
-from path import Path
+from plib import Path
 
 from libs.cli import Cli
 
