@@ -119,8 +119,7 @@ class Cli:
 
     @staticmethod
     def run_exe(path):
-        with ErrorHandler():
-            Cli.run(f"./{path.name}", pwd=path.parent)
+        Cli.run(f"./{path.name}", pwd=path.parent)
 
 
 def main():
