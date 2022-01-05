@@ -51,20 +51,11 @@ class Cli:
         if not wait:
             # add empty element to finish total command with &
             commands = [f"nohup {c} &>/dev/null " for c in commands] + [""]
-
-        if any(["sudo" in c for c in commands]) and not console:
-            # Give password programatically
-            pw = os.environ.get("pw")
             
-            if pw is None:
-                from dotenv import load_dotenv # long import time and not often needed
-                from plib import Path
-                load_dotenv(dotenv_path=Path.HOME / ".bash_profile")
-                pw = os.environ.get("pw")
 
-            if pw is not None:
-                start_command = f"echo {pw} | sudo -S echo "" &> /dev/null"
-                commands.insert(0, start_command)
+        if "SUDO_ASKPASS" in os.environ:
+            # Give password programatically
+            commands = [c.replace("sudo", "sudo -A") for c in commands]
                 
         if confirm:
             commands += ["echo -n $'Exit? [Y/n]'", "read"]
