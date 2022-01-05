@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from .path import Path
+from plib import Path
 
 
 def load():
