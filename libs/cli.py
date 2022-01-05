@@ -52,6 +52,9 @@ class Cli:
             # add empty element to finish total command with &
             commands = [f"nohup {c} &>/dev/null " for c in commands] + [""]
             
+        if "SUDO_ASKPASS" not in os.environ:
+            from libs import env # long import time and not often needed
+            env.load()
 
         if "SUDO_ASKPASS" in os.environ:
             # Give password programatically
