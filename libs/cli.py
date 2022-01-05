@@ -55,6 +55,13 @@ class Cli:
         if any(["sudo" in c for c in commands]) and not console:
             # Give password programatically
             pw = os.environ.get("pw")
+            
+            if pw is None:
+                from dotenv import load_dotenv # long import time and not often needed
+                from plib import Path
+                load_dotenv(dotenv_path=Path.HOME / ".bash_profile")
+                pw = os.environ.get("pw")
+
             if pw is not None:
                 start_command = f"echo {pw} | sudo -S echo "" &> /dev/null"
                 commands.insert(0, start_command)
