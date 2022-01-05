@@ -20,7 +20,6 @@ setup(
     version='1.0',
     packages=find_packages(),
     install_requires=read("requirements.txt"),
-    scripts=['bin/Qaskpass'],
     entry_points={
         "console_scripts": [
             "konsolerun = libs.cli:main",
