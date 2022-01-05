@@ -83,7 +83,15 @@ class Cli:
                 os.environ["DISPLAY"] = ":0.0" # needed for non-login scripts to be able to activate console
         
         run = subprocess.Popen if console else subprocess.run
-        return run(commands, **kwargs)
+        try:
+            res = run(commands, **kwargs)
+        except subprocess.CalledProcessError as e:
+            if e.stderr is not None:
+                raise Exception(e.stderr.decode())
+            else:
+                raise e
+
+        return res
 
     @staticmethod
     def get(*commands, **kwargs):
