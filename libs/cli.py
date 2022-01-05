@@ -79,6 +79,8 @@ class Cli:
             commands = ["konsole", "--new-tab", "-e"] + commands
             if debug:
                 commands.insert(commands.index(console) + 1, "--noclose")
+            if "DISPLAY" not in os.environ:
+                os.environ["DISPLAY"] = ":0.0" # needed for non-login scripts to be able to activate console
         
         run = subprocess.Popen if console else subprocess.run
         return run(commands, **kwargs)
