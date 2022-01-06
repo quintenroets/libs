@@ -1,4 +1,3 @@
-dbus-python
 selenium
 progress
 python-dotenv

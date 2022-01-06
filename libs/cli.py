@@ -66,7 +66,7 @@ class Cli:
         joiner = "; " if wait else "& "
         commands = [joiner.join(commands)]
         
-        if shell or any([bash_symbol in commands[0] for bash_symbol in " ;$"]):
+        if shell or any([bash_symbol in commands[0] for bash_symbol in " ;$"]) and "SHELL" in os.environ:
             commands = [os.environ["SHELL"], "-c"] + commands
         
         if console or debug:
