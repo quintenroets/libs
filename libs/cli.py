@@ -141,6 +141,22 @@ class Cli:
     @staticmethod
     def run_exe(path):
         Cli.run(f"./{path.name}", pwd=path.parent)
+        
+    @staticmethod
+    def start(*urls):
+        urls = Cli.check_iterable(*urls)
+        """
+        :param urls: iterable with items of instance Path or string
+        Open url in cross-platform way as if it was double-clicked
+        """
+        
+        if os.name == 'nt':
+            for url in urls:
+                os.startfile(url)
+        else:
+            import subprocess
+            for url in urls:
+                subprocess.run(('xdg-open', url), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) # hide annoying messages
 
 
 def main():
