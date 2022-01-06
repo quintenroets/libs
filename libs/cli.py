@@ -95,7 +95,17 @@ class Cli:
 
     @staticmethod
     def install(*packages, installer_command=None):
+        # lazy imports
+        import platform
+        import warnings
+        
         packages = Cli.check_iterable(*packages)
+        
+        if platform.system() != "Linux":
+            packages_message = " ".join(packages)
+            message = f"Not on linux OS so not automatically installing required packages: {packages_message}"
+            warnings.warn(message)
+            return
         
         installer_commands = {
             "apt": "apt install -y",
