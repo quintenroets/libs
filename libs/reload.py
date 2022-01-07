@@ -58,8 +58,6 @@ def get_load_time(module):
     load_time = 0
     load_file = module.__dict__.get("__cached__")
     if load_file:
-        load_path = Path(load_file)
-        if load_path.exists():
-            load_time = load_path.stat().st_mtime
+        load_time = Path(load_file).mtime
             
     return load_time
