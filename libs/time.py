@@ -32,14 +32,3 @@ def utc_to_epoch(string, format="%Y-%m-%dT%H:%M:%S.%fZ"):
 
 def epoch_to_utc(time):
     return datetime.fromtimestamp(time).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-
-def set_time(file, timestamp):
-    if not timestamp:
-        return
-
-    if type(timestamp) == str:
-        # need seconds since epoch
-        timestamp = utc_to_epoch(timestamp) + 3600
-
-    os.utime(file, (timestamp, timestamp))
-    Cli.run(f'touch -d "@{timestamp}" "{file}"')
