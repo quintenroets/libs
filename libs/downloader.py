@@ -38,12 +38,15 @@ class Downloader:
                     return succes
 
     @staticmethod
-    def _download(url, dest, progress, headers={}, chunck_size=None, timeout=10, session=None, callback=None, **kwargs):
+    def _download(url, dest, progress, headers=None, chunck_size=None, timeout=10, session=None, callback=None, **kwargs):
         if session is None:
             session = requests
             
         if chunck_size is None:
             chunck_size = 32 * 2 ** 10 # 32 KB
+            
+        if headers is None:
+            headers = {}
         
         headers["Range"] = f"bytes={dest.size}-"
         stream = session.get(url, headers=headers, timeout=timeout, stream=True)
