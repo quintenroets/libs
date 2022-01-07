@@ -13,7 +13,7 @@ class Downloader:
         
         progress = tqdm(
             desc=f"Downloading {dest.name}", 
-            initial=temp_dest.size(),
+            initial=temp_dest.size,
             unit="B", 
             unit_scale=True,
             leave=False,
@@ -45,7 +45,7 @@ class Downloader:
         if chunck_size is None:
             chunck_size = 32 * 2 ** 10 # 32 KB
         
-        headers["Range"] = f"bytes={dest.size()}-"
+        headers["Range"] = f"bytes={dest.size}-"
         stream = session.get(url, headers=headers, timeout=timeout, stream=True)
         
         if stream.status_code == 416: # range not supported
@@ -64,11 +64,11 @@ class Downloader:
         if progress.total is None:
             progress.total = download_size
             
-        if dest.size() > start:
+        if dest.size > start:
             start = 0
-            progress.update(-dest.size())
+            progress.update(-dest.size)
             if callback:
-                callback(-dest.size() / progress.total)
+                callback(-dest.size / progress.total)
             dest.write_bytes(b"") # reset content
         
         with open(dest, "ab") as fp:
@@ -78,7 +78,7 @@ class Downloader:
                 if callback:
                     callback(len(chunck) / progress.total)
 
-        if download_size != dest.size():
+        if download_size != dest.size:
             raise requests.exceptions.RequestException
 
     @staticmethod
