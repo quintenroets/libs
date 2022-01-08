@@ -9,7 +9,7 @@ class CliSpinner:
         self.spinner = Spinner(self.message)
         self.quit = False
 
-    def __enter__(self, message=None):
+    def __enter__(self):
         Thread(target=self.update).start()
         
     def update(self):

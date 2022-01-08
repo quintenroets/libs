@@ -6,7 +6,8 @@ class CliMessage:
         print(self.message, end="\r")
 
     def __exit__(self, exception_type, exception_value, exception_traceback):
-        print(" " * len(self.message), end="\r")
+        print("\r", end="")
+        print(" " * (len(self.message) + 5), end="\r")
 
 def ask(question, **choice_mappers):
     if not choice_mappers:
