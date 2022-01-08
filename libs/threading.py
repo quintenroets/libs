@@ -2,8 +2,9 @@ from threading import Thread as BaseThread
 from libs.errorhandler import ErrorHandler
 
 class Thread(BaseThread):
-    def __init__(self, target, *args, **kwargs):
+    def __init__(self, target, *args, exit_on_error=True, **kwargs):
         self.crashed = False
+        self.exit_on_error = exit_on_error
         super(Thread, self).__init__(target=self.start_errorsafe, args=(target, *args), kwargs=(kwargs))
         
     def start_errorsafe(self, target, *args, **kwargs):

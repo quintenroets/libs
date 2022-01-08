@@ -1,8 +1,9 @@
 class ErrorHandler():
     error = False
 
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, exit=True):
         self.obj = obj
+        self.exit = exit
     
     def __enter__(self):
         pass
@@ -10,7 +11,7 @@ class ErrorHandler():
     def __exit__(self, type, value, tb):
         if tb:
             if type != KeyboardInterrupt and not ErrorHandler.error:
-                ErrorHandler.show_error()
+                ErrorHandler.show_error(exit=self.exit)
             if self.obj is not None:
                 self.obj.crashed = str(tb)
 
