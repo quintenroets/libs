@@ -8,7 +8,7 @@ class Thread(BaseThread):
         super(Thread, self).__init__(target=self.start_errorsafe, args=(target, *args), kwargs=(kwargs))
         
     def start_errorsafe(self, target, *args, **kwargs):
-        with ErrorHandler(self):
+        with ErrorHandler(self, exit=self.exit_on_error):
             target(*args, **kwargs)
 
     def start(self):
