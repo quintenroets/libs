@@ -42,8 +42,13 @@ class Cli:
 
         if "check" not in kwargs and wait and not console:
             kwargs["check"] = True
+            
+        if "text" not in kwargs:
+            kwargs["text"] = True
 
         if not wait:
+            kwargs["stdout"] = subprocess.DEVNULL
+            kwargs["stderr"] = subprocess.DEVNULL
             # add empty element to finish total command with &
             commands = [f"nohup {c} &>/dev/null " for c in commands] + [""]
             
@@ -85,7 +90,7 @@ class Cli:
     @staticmethod
     def get(*commands, **kwargs):
         results = Cli.run(*commands, capture_output=True, **kwargs)
-        result = "".join([r.stdout.decode().strip() for r in results])
+        result = "".join([r.stdout.strip() for r in results])
         return result
 
     @staticmethod
