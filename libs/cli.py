@@ -133,10 +133,6 @@ class Cli:
             elif isinstance(arg, types.GeneratorType):
                 args = list(arg)
         return args
-
-    @staticmethod
-    def run_exe(path):
-        Cli.run(f"./{path.name}", cwd=path.parent)
         
     @staticmethod
     def start(*urls):
