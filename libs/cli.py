@@ -6,7 +6,6 @@ import time
 import types
 
 from libs.errorhandler import ErrorHandler
-from libs.output_copy import Output
 
 
 class Cli:
@@ -43,10 +42,6 @@ class Cli:
 
         if "check" not in kwargs and wait and not console:
             kwargs["check"] = True
-
-        if "pwd" in kwargs:
-            pwd = kwargs.pop("pwd")
-            commands.insert(0, f'cd "{pwd}"')
 
         if not wait:
             # add empty element to finish total command with &
@@ -133,14 +128,10 @@ class Cli:
             elif isinstance(arg, types.GeneratorType):
                 args = list(arg)
         return args
-    
-    @staticmethod
-    def set_title(title):
-        return Cli.run(f'qdbus org.kde.konsole $KONSOLE_DBUS_SESSION setTitle 1 "{title}"')
 
     @staticmethod
     def run_exe(path):
-        Cli.run(f"./{path.name}", pwd=path.parent)
+        Cli.run(f"./{path.name}", cwd=path.parent)
         
     @staticmethod
     def start(*urls):
