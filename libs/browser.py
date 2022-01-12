@@ -9,11 +9,6 @@ from plib import Path
 
 
 class Browser(Chrome):
-    def load_cookies(self):
-        cookies = self.cookies_path.load()
-        for cookie in cookies:
-            self.add_cookie(cookie)
-
     def __init__(self, headless=True, cookies_path=None, base_url=None, logging=False):
         self.cookies_path = Path(cookies_path) if cookies_path else None
         self.base_url = base_url
@@ -37,7 +32,8 @@ class Browser(Chrome):
         if self.base_url:
             self.get(base_url)
         if self.cookies_path:
-            self.load_cookies()
+            for cookie in self.cookies_path.content:
+                self.add_cookie(cookie)
         if self.base_url:
             self.get(base_url)
 
@@ -46,11 +42,18 @@ class Browser(Chrome):
             if self.base_url:
                 self.get(self.base_url)
 
-            cookies = self.get_cookies()
-            self.cookies_path.save(cookies)
+            self.cookies_path.content = self.get_cookies()
 
         self.close()
         self.quit()
+        
+    @property
+    def domain(self):
+        return self.current_url.replace("https://", "").split("/")[0]
+        
+    @property
+    def domain_name(self):
+        return self.domain_name.replace('.', '')
 
     def click_by_name(self, name):
         self.click_by_condition(lambda button: button.text == name)
