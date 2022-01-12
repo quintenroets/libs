@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-from libs.cli import Cli
 
 NAME = "libs"
 
@@ -20,11 +19,9 @@ setup(
     version='1.0',
     packages=find_packages(),
     setup_requires=read("setup_requirements.txt"),
-    install_requires=read("requirements.txt"),
-    entry_points={
-        "console_scripts": [
-            "konsolerun = libs.cli:main",
-        ]},
+    install_requires=read("requirements.txt")
 )
 
-Cli.install(*read("packages.txt"))
+#import cli
+
+#cli.install(*read("packages.txt"))

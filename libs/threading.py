@@ -1,5 +1,6 @@
+import cli
+
 from threading import Thread as BaseThread
-from libs.errorhandler import ErrorHandler
 
 class Thread(BaseThread):
     def __init__(self, target, *args, exit_on_error=True, **kwargs):
@@ -8,7 +9,7 @@ class Thread(BaseThread):
         super(Thread, self).__init__(target=self.start_errorsafe, args=(target, *args), kwargs=(kwargs))
         
     def start_errorsafe(self, target, *args, **kwargs):
-        with ErrorHandler(self, exit=self.exit_on_error):
+        with cli.errorhandler(self, exit=self.exit_on_error):
             target(*args, **kwargs)
 
     def start(self):

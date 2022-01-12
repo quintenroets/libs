@@ -2,9 +2,9 @@ from selenium.webdriver import Chrome, ChromeOptions
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+import cli
 import time
 
-from libs.cli import Cli
 from plib import Path
 
 
@@ -25,7 +25,7 @@ class Browser(Chrome):
         if headless:
             chrome_options.add_argument("headless")
 
-        path = Cli.get("which chromium") + ".chromedriver"
+        path = cli.get("which chromium") + ".chromedriver"
         if logging:
             capabilities = DesiredCapabilities.CHROME
             capabilities["goog:loggingPrefs"] = {"performance": "ALL"}

@@ -1,4 +1,2 @@
 selenium
-progress
-python-dotenv
 superpathlib @ git+https://github.com/quintenroets/superpathlib

@@ -1,4 +1,5 @@
-from libs.cli import Cli
+import cli
+
 
 class Gui:
     @staticmethod
@@ -18,7 +19,7 @@ class Gui:
         
     @staticmethod
     def ask_yn(question):
-        return Cli.get(f"kdialog --yesno '{question}' && echo confirmed", check=False)
+        return cli.get(f"kdialog --yesno '{question}' && echo confirmed", check=False)
 
     @staticmethod
     def ask_options(question, options):
@@ -44,5 +45,5 @@ class Gui:
         options.update(custom_options)
         options = " ".join([f"--{k}" if v is None else f"--{k}='{v}'" for k, v in options.items()])
         command = f"yad {options} --{subcommand}"
-        result = Cli.get(command, check=False)
+        result = cli.get(command, check=False)
         return result
