@@ -22,6 +22,6 @@ setup(
     install_requires=read("requirements.txt")
 )
 
-#import cli
+import cli
 
-#cli.install(*read("packages.txt"))
+cli.install(*read("packages.txt"))
