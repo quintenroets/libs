@@ -53,7 +53,7 @@ class Browser(Chrome):
         
     @property
     def domain_name(self):
-        return self.domain_name.replace('.', '')
+        return self.domain.replace('.', '')
 
     def click_by_name(self, name):
         self.click_by_condition(lambda button: button.text == name)
