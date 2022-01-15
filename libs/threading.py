@@ -1,8 +1,8 @@
 import cli
+import threading
 
-from threading import Thread as BaseThread
 
-class Thread(BaseThread):
+class Thread(threading.Thread):
     def __init__(self, target, *args, exit_on_error=True, **kwargs):
         self.crashed = False
         self.exit_on_error = exit_on_error
