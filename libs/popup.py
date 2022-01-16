@@ -1,8 +1,8 @@
-import itertools
-import fnmatch, os, subprocess, time
-import time
-from threading import Thread
 import dbus
+import itertools
+import time
+import fnmatch, os, subprocess, time
+from threading import Thread
 
 from libs.output import Output
 
@@ -16,9 +16,9 @@ def get_dbus_interface(name, path, interface):
 class Popup:
     def __init__(self,
             *args,
-            title="Working",
-            message="",
-            progress_name="",
+            title='Working',
+            message='',
+            progress_name='',
             amount=0,
             description=False,
             show_progress_message=True,
@@ -46,7 +46,7 @@ class Popup:
         self.output = Output(capture_errors=capture_errors) if capture_output else None
         self.finished = False
 
-        app_icon_name = ""
+        app_icon_name = ''
         ui_interface = get_dbus_interface('org.kde.kuiserver', '/JobViewServer', 'org.kde.JobViewServer')
         own_interface_path = ui_interface.requestView(title, app_icon_name, 0)
         
@@ -57,7 +57,7 @@ class Popup:
             self.percentage = 1
         self.handle = handle
         if description:
-            self.handle.setDescriptionField(0, "", self.message)
+            self.handle.setDescriptionField(0, '', self.message)
 
         if capture_output:
             Thread(target=self.update_message).start()
@@ -75,16 +75,16 @@ class Popup:
         if self.output and False:
             message = str(self.output)
         elif not exception:
-            message = ""
+            message = ''
         elif isinstance(exception, KeyboardInterrupt):
-            message = "Cancelled"
+            message = 'Cancelled'
         else:
-            message = "Error"
+            message = 'Error'
 
         if self.output:
             self.output.__exit__(_, exception, tb)
             
-        self.handle.setInfoMessage("")
+        self.handle.setInfoMessage('')
         self.handle.terminate(message)
         
     def progress(self):
@@ -94,7 +94,7 @@ class Popup:
         self.progress_value = progress
         self.show_progress()
         if self.output:
-            self.handle.setDescriptionField(1, "", str(self.output))
+            self.handle.setDescriptionField(1, '', str(self.output))
         
     def show_progress(self, percentage=None):
         if self.amount != 0 and self.amount is not None:
@@ -110,9 +110,9 @@ class Popup:
         self.set_progress(self.progress_value + progress)
 
     def set_progress_message(self):
-        message = f"{self.message}" if self.message else ""
+        message = f'{self.message}' if self.message else ''
         if self.show_progress_message:
-            message = f"{message}\n{self.progress_value}/{self.amount} {self.progress_name}"
+            message = f'{message}\n{self.progress_value}/{self.amount} {self.progress_name}'
         if self.handle:
             self.handle.setInfoMessage(message)
 
@@ -125,7 +125,7 @@ class Popup:
 
     def update_message(self):
         while not self.finished:
-            message = "\n".join(str(self.output).split("\n")[-3:])
+            message = '\n'.join(str(self.output).split('\n')[-3:])
             self.handle.setInfoMessage(message)
             time.sleep(0.2)
 

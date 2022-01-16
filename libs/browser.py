@@ -1,9 +1,10 @@
+import cli
+import time
+
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
-import cli
-import time
+from retry import retry
 
 from plib import Path
 
@@ -58,15 +59,11 @@ class Browser(Chrome):
     def click_by_name(self, name):
         self.click_by_condition(lambda button: button.text == name)
 
+    @retry((StaleElementReferenceException, StopIteration), delay=1)
     def click_by_condition(self, condition):
-        succes = False
-        while not succes:
-            try:
-                buttons = (b for b in self.find_elements_by_tag_name("button") if condition(b))
-                next(buttons).click()
-                succes = True
-            except (StaleElementReferenceException, StopIteration):
-                time.sleep(1)
+        for button in self.find_elements_by_tag_name('button'):
+            if condition(button):
+                button.click()
 
     def click_link_by_name(self, name):
         buttons = (b for b in self.find_elements_by_tag_name("a") if b.text == name)
