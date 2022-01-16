@@ -21,7 +21,7 @@ class Scanner:
         
         for sub in range(2):
             for sub2 in range(256):
-                ip = f"192.168.{sub}.{sub2}"
+                ip = f'192.168.{sub}.{sub2}'
                 Thread(target=Scanner.try_connection, args=(ip, port, )).start()
             
         with host_found_condition:

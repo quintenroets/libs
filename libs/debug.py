@@ -9,11 +9,11 @@ class Debugger():
         
     def log(self, frame, event, arg):
         globals_vars = frame.f_globals.copy()
-        globals_vars.pop("__builtins__")
-        globals_vars.pop("__cached__")
+        globals_vars.pop('__builtins__')
+        globals_vars.pop('__cached__')
         variables = {
-            "locals": frame.f_locals,
-            "globals": globals_vars,
+            'locals': frame.f_locals,
+            'globals': globals_vars,
             }
         self.log_list.append(variables)
         

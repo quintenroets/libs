@@ -11,10 +11,10 @@ class Reloader(Debugger):
 
 
 def reload(root=None, auto=False, verbose=False):
-    """
+    '''
     Reload all imported modules with files under root:
     very handy to see changes without kernel restart
-    """
+    '''
     if root is None:
         root = Path.HOME
     
@@ -26,20 +26,20 @@ def reload(root=None, auto=False, verbose=False):
     else:
         reloaded = _reload(root)
         if verbose:
-            message = "\n\t".join(["Reloaded:", *reloaded])
+            message = '\n\t'.join(['Reloaded:', *reloaded])
 
 
 def _reload(root=None):
-    """
+    '''
     Reload all imported modules with files under root:
     very handy to see changes without kernel restart
-    """
+    '''
 
     to_reload = [
         module
         for module in sys.modules.values()
-        if module.__dict__.get("__file__")
-        and root in Path(module.__dict__["__file__"]).parents
+        if module.__dict__.get('__file__')
+        and root in Path(module.__dict__['__file__']).parents
     ]
     reloaded = []
 
@@ -56,7 +56,7 @@ def _reload(root=None):
 
 def get_load_time(module):
     load_time = 0
-    load_file = module.__dict__.get("__cached__")
+    load_file = module.__dict__.get('__cached__')
     if load_file:
         load_time = Path(load_file).mtime
             

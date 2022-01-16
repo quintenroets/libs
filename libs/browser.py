@@ -13,18 +13,18 @@ class Browser(Chrome):
     def __init__(self, headless=True, cookies_path=None, base_url=None, logging=False):
         self.cookies_path = Path(cookies_path) if cookies_path else None
         self.base_url = base_url
-        if self.base_url and not self.base_url.endswith("/"):
-            self.base_url = self.base_url + "/"
+        if self.base_url and not self.base_url.endswith('/'):
+            self.base_url = self.base_url + '/'
 
         chrome_options = ChromeOptions()
-        chrome_options.add_argument("--start-maximized")
+        chrome_options.add_argument('--start-maximized')
         if headless:
-            chrome_options.add_argument("headless")
+            chrome_options.add_argument('headless')
 
-        path = cli.get("which chromium") + ".chromedriver"
+        path = cli.get('which chromium') + '.chromedriver'
         if logging:
             capabilities = DesiredCapabilities.CHROME
-            capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
+            capabilities['goog:loggingPrefs'] = {'performance': 'ALL'}
         else:
             capabilities = None
 
@@ -50,7 +50,7 @@ class Browser(Chrome):
         
     @property
     def domain(self):
-        return self.current_url.replace("https://", "").split("/")[0]
+        return self.current_url.replace('https://', '').split('/')[0]
         
     @property
     def domain_name(self):
@@ -66,10 +66,10 @@ class Browser(Chrome):
                 button.click()
 
     def click_link_by_name(self, name):
-        buttons = (b for b in self.find_elements_by_tag_name("a") if b.text == name)
+        buttons = (b for b in self.find_elements_by_tag_name('a') if b.text == name)
         next(buttons).click()
 
     def get(self, url):
-        if not url.startswith("http"):
+        if not url.startswith('http'):
             url = self.base_url + url
         return super().get(url)

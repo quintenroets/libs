@@ -16,7 +16,7 @@ class Output:
     def __enter__(self):
         self._stdout = sys.stdout
         self._stderr = sys.stderr
-        self.output = tempfile.TemporaryFile(mode="w+")
+        self.output = tempfile.TemporaryFile(mode='w+')
 
         sys.stdout = self.output
         if self.capture_errors:
@@ -31,7 +31,7 @@ class Output:
 
     def __str__(self):
         if self.output is None:
-            output_value = ""
+            output_value = ''
         elif self.output_value is None:
             with mutex:
                 self.output.seek(0)

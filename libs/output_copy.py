@@ -13,7 +13,7 @@ class Output:
     def __enter__(self):
         self.file_object = tempfile.NamedTemporaryFile()
         self.file_object.__enter__()
-        tee = subprocess.Popen(["tee", self.file_object.name], stdin=subprocess.PIPE)
+        tee = subprocess.Popen(['tee', self.file_object.name], stdin=subprocess.PIPE)
         tee_fileno = tee.stdin.fileno()
         
         self._stdout = os.dup(1)
@@ -30,7 +30,7 @@ class Output:
         self.file_object.__exit__(type_ ,value, traceback)
 
     def __str__(self):
-        output = ""
+        output = ''
         if self.output is not None:
             output = self.output
         elif self.file_object is not None:
