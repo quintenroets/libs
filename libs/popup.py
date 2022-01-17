@@ -2,7 +2,7 @@ import dbus
 import itertools
 import time
 import fnmatch, os, subprocess, time
-from threading import Thread
+import tbhandler.threading as threading
 
 from libs.output import Output
 
@@ -60,7 +60,7 @@ class Popup:
             self.handle.setDescriptionField(0, '', self.message)
 
         if capture_output:
-            Thread(target=self.update_message).start()
+            threading.Thread(target=self.update_message).start()
 
     
     def __enter__(self):
