@@ -54,10 +54,6 @@ class Popup:
         self.handle = handle
         if description:
             self.handle.setDescriptionField(0, '', self.message)
-
-        if capture_output:
-            threading.Thread(target=self.update_message).start()
-
     
     def __enter__(self):
         return self
@@ -66,7 +62,7 @@ class Popup:
         self.set_progress(self.progress_value)
         self.finished = True
 
-        elif not exception:
+        if not exception:
             message = ''
         elif isinstance(exception, KeyboardInterrupt):
             message = 'Cancelled'
