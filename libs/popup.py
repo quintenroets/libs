@@ -4,8 +4,6 @@ import time
 import fnmatch, os, subprocess, time
 import tbhandler.threading as threading
 
-from libs.output import Output
-
 session_bus = dbus.SessionBus()
 
 def get_dbus_interface(name, path, interface):
@@ -22,7 +20,6 @@ class Popup:
             amount=0,
             description=False,
             show_progress_message=True,
-            capture_output=False,
             capture_errors=False
             ):
 
@@ -43,7 +40,6 @@ class Popup:
         self.progress_value = 0
         self.percentage = 0
         self.show_progress_message = show_progress_message
-        self.output = Output(capture_errors=capture_errors) if capture_output else None
         self.finished = False
 
         app_icon_name = ''
@@ -64,25 +60,18 @@ class Popup:
 
     
     def __enter__(self):
-        if self.output:
-            self.output.__enter__()
         return self
 
     def __exit__(self, _, exception, tb):
         self.set_progress(self.progress_value)
         self.finished = True
 
-        if self.output and False:
-            message = str(self.output)
         elif not exception:
             message = ''
         elif isinstance(exception, KeyboardInterrupt):
             message = 'Cancelled'
         else:
             message = 'Error'
-
-        if self.output:
-            self.output.__exit__(_, exception, tb)
             
         self.handle.setInfoMessage('')
         self.handle.terminate(message)
@@ -93,8 +82,6 @@ class Popup:
     def set_progress(self, progress):
         self.progress_value = progress
         self.show_progress()
-        if self.output:
-            self.handle.setDescriptionField(1, '', str(self.output))
         
     def show_progress(self, percentage=None):
         if self.amount != 0 and self.amount is not None:
@@ -122,12 +109,6 @@ class Popup:
 
     def set_amount(self, amount):
         self.amount = amount
-
-    def update_message(self):
-        while not self.finished:
-            message = '\n'.join(str(self.output).split('\n')[-3:])
-            self.handle.setInfoMessage(message)
-            time.sleep(0.2)
 
     def __iter__(self):
         with self:
