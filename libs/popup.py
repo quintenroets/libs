@@ -2,7 +2,7 @@ import dbus
 import itertools
 import time
 import fnmatch, os, subprocess, time
-import tbhandler.threading as threading
+
 
 session_bus = dbus.SessionBus()
 
