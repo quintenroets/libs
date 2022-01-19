@@ -1,4 +1,3 @@
 retry
 selenium
 superpathlib @ git+https://github.com/quintenroets/superpathlib
-tbhandler @ git+https://github.com/quintenroets/tbhandler
