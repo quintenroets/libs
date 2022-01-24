@@ -2,25 +2,26 @@ import subprocess
 
 from setuptools import setup, find_packages
 
-NAME = 'libs'
+NAME = "libs"
+
 
 def read(filename):
     try:
         with open(filename) as fp:
-            content = fp.read().split('\n')
+            content = fp.read().split("\n")
     except FileNotFoundError:
         content = []
     return content
 
 
 setup(
-    author='Quinten Roets',
-    author_email='quinten.roets@gmail.com',
-    description='',
+    author="Quinten Roets",
+    author_email="quinten.roets@gmail.com",
+    description="",
     name=NAME,
-    version='1.0',
+    version="1.0",
     packages=find_packages(),
-    install_requires=read('requirements.txt')
+    install_requires=read("requirements.txt"),
 )
 
-subprocess.run(('pre-commit', 'install'))
+subprocess.run(("pre-commit", "install"))
