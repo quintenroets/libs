@@ -1,3 +1,5 @@
+import subprocess
+
 from setuptools import setup, find_packages
 
 NAME = 'libs'
@@ -18,10 +20,7 @@ setup(
     name=NAME,
     version='1.0',
     packages=find_packages(),
-    setup_requires=read('setup_requirements.txt'),
     install_requires=read('requirements.txt')
 )
 
-import cli
-
-cli.install(*read('packages.txt'))
+subprocess.run(('pre-commit', 'install'))

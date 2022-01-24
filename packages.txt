@@ -1,3 +1,0 @@
-build-essential 
-libdbus-glib-1-dev 
-libgirepository1.0-dev

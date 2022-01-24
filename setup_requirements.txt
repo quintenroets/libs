@@ -1,2 +1,0 @@
-cli @ git+https://github.com/quintenroets/cli
-superpathlib @ git+https://github.com/quintenroets/superpathlib
