@@ -1,22 +1,23 @@
 import sys
 
-class Debugger():
+
+class Debugger:
     def __init__(self, func=None, *args, **kwargs):
         self.func = func
         self.args = args
         self.kwargs = kwargs
         self.log_list = []
-        
+
     def log(self, frame, event, arg):
         globals_vars = frame.f_globals.copy()
-        globals_vars.pop('__builtins__')
-        globals_vars.pop('__cached__')
+        globals_vars.pop("__builtins__")
+        globals_vars.pop("__cached__")
         variables = {
-            'locals': frame.f_locals,
-            'globals': globals_vars,
-            }
+            "locals": frame.f_locals,
+            "globals": globals_vars,
+        }
         self.log_list.append(variables)
-        
+
     def callback(self, *args):
         if self.func:
             self.func(*self.args, **self.kwargs)

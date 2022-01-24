@@ -1,11 +1,11 @@
-import cli
 import time
 
-from selenium.webdriver import Chrome, ChromeOptions
-from selenium.common.exceptions import StaleElementReferenceException
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from retry import retry
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver import Chrome, ChromeOptions
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+import cli
 from plib import Path
 
 
