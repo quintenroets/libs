@@ -4,17 +4,17 @@ from plib import Path
 
 class ShortcutMaker:
     def __init__(self):
-        self.config_file = Path.HOME / '.xbindkeysrc.scm'
+        self.config_file = Path.HOME / ".xbindkeysrc.scm"
         self.lines = self.config_file.lines
-        edge = '; -- scripts --'
+        edge = "; -- scripts --"
         if edge in self.lines:
-            self.lines = self.lines[:self.lines.index(edge) + 1]
-        self.lines += ['(set-keyboard-bindings', ')']
+            self.lines = self.lines[: self.lines.index(edge) + 1]
+        self.lines += ["(set-keyboard-bindings", ")"]
 
-    def set_shortcuts(self):
+    def save_shortcuts(self):
         self.config_file.lines = self.lines
-        cli.run('xbindkeys --poll-rc')
+        cli.run("xbindkeys --poll-rc")
 
-    def make_shortcut(self, hotkey, target):
-        item = f'\t(list \'({hotkey}) "{target}")' if target else '\n'
-        self.lines.insert(-1, item) # insert before closing parenthese 
+    def add_shortcut(self, hotkey, target):
+        item = f'\t(list \'({hotkey}) "{target}")' if target else "\n"
+        self.lines.insert(-1, item)  # insert before closing parenthese
