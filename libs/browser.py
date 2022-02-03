@@ -1,7 +1,10 @@
 import time
 
 from retry import retry
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    StaleElementReferenceException,
+)
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
@@ -47,8 +50,7 @@ class Browser(Chrome):
 
             self.cookies_path.content = self.get_cookies()
 
-        self.close()
-        self.quit()
+        super().__exit__()
 
     @property
     def domain(self):
@@ -70,6 +72,19 @@ class Browser(Chrome):
     def click_link_by_name(self, name):
         buttons = (b for b in self.find_elements_by_tag_name("a") if b.text == name)
         next(buttons).click()
+
+    def is_present(self, id):
+        try:
+            self.find_element_by_id(id)
+        except NoSuchElementException:
+            present = False
+        else:
+            present = True
+        return present
+
+    @retry(NoSuchElementException, tries=10, delay=1)
+    def find_element_by_id(self, id_):
+        return super().find_element_by_id(id_)
 
     def get(self, url):
         if not url.startswith("http"):
