@@ -14,6 +14,14 @@ def get_dbus_interface(name, path, interface):
     return dbus.Interface(obj, dbus_interface=interface)
 
 
+class SilentUIHandle:
+    def __getattr__(self, name):
+        def method(*args, **kwargs):
+            pass
+
+        return method
+
+
 class UIHandle:
     def __new__(self, title, app_icon_name=""):
         ui_interface = get_dbus_interface(
@@ -37,8 +45,9 @@ class Popup:
         amount=0,
         description=False,
         capture_errors=False,
+        silent=False,
     ):
-        self.handle = UIHandle(title)
+        self.handle = UIHandle(title) if not silent else SilentUIHandle()
         self.handle.setInfoMessage(message)
 
         # title can be given by first argument as well
