@@ -23,5 +23,3 @@ setup(
     packages=find_packages(),
     install_requires=read("requirements.txt"),
 )
-
-subprocess.run(("pre-commit", "install"))
