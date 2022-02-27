@@ -31,3 +31,16 @@ class Timer:
                 else f"{self.message}: {interval}"
             )
             print(message)
+
+
+def timing(function):
+    """
+    Returns a timing decorator.
+    Times duration of function
+    """
+
+    def timing_decorator(*args, **kwargs):
+        with Timer():
+            return function(*args, **kwargs)
+
+    return timing_decorator
