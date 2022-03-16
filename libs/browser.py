@@ -2,6 +2,7 @@ import time
 
 from retry import retry
 from selenium.common.exceptions import (
+    InvalidCookieDomainException,
     NoSuchElementException,
     StaleElementReferenceException,
 )
@@ -39,7 +40,10 @@ class Browser(Chrome):
             self.get(base_url)
         if self.cookies_path:
             for cookie in self.cookies_path.content:
-                self.add_cookie(cookie)
+                try:
+                    self.add_cookie(cookie)
+                except InvalidCookieDomainException:
+                    pass
         if self.base_url:
             self.get(base_url)
 
@@ -75,7 +79,7 @@ class Browser(Chrome):
 
     def is_present(self, id):
         try:
-            self.find_element_by_id(id)
+            super().find_element_by_id(id)
         except NoSuchElementException:
             present = False
         else:
