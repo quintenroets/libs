@@ -40,7 +40,7 @@ def timing(function):
     """
 
     def timing_decorator(*args, **kwargs):
-        with Timer():
+        with Timer(function.__name__):
             return function(*args, **kwargs)
 
     return timing_decorator
