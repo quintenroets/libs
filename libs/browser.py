@@ -1,33 +1,42 @@
 import time
 
+import selenium
 from retry import retry
 from selenium.common.exceptions import (
     InvalidCookieDomainException,
     NoSuchElementException,
     StaleElementReferenceException,
 )
-from selenium.webdriver import Chrome, ChromeOptions
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.keys import Keys
 
 import cli
 from plib import Path
 
 
-class Browser(Chrome):
-    def __init__(self, headless=True, cookies_path=None, base_url=None, logging=False):
+class Browser(selenium.webdriver.Chrome):
+    def __init__(
+        self,
+        headless=True,
+        cookies_path=None,
+        base_url=None,
+        logging=False,
+        experimental_options={},
+    ):
         self.cookies_path = Path(cookies_path) if cookies_path else None
         self.base_url = base_url
         if self.base_url and not self.base_url.endswith("/"):
             self.base_url = self.base_url + "/"
 
-        chrome_options = ChromeOptions()
+        chrome_options = selenium.webdriver.ChromeOptions()
         chrome_options.add_argument("--start-maximized")
         if headless:
             chrome_options.add_argument("headless")
+        for name, value in experimental_options.items():
+            chrome_options.add_experimental_option(name, value)
 
         path = cli.get("which chromium") + ".chromedriver"
         if logging:
-            capabilities = DesiredCapabilities.CHROME
+            capabilities = selenium.webdriver.DesiredCapabilities.CHROME
             capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
         else:
             capabilities = None
@@ -94,3 +103,9 @@ class Browser(Chrome):
         if not url.startswith("http"):
             url = self.base_url + url
         return super().get(url)
+
+    def fill_in(self, items):
+        for id_, value in items.items():
+            field = self.find_element_by_id(id_)
+            if not field.get_property("value"):  # don't fill in twice
+                field.send_keys(value, Keys.ENTER)
