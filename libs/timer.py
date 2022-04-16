@@ -1,5 +1,9 @@
-import datetime
 import time
+from datetime import timedelta
+from functools import wraps
+from typing import Callable
+
+import cli
 
 
 class Timer:
@@ -11,34 +15,34 @@ class Timer:
         self.silent = silent
 
     def __enter__(self, message=None):
-        self.start = time.time()
+        self.start = time.perf_counter()
 
     def __exit__(self, exception_type, exception_value, exception_traceback):
-        seconds = time.time() - self.start
+        seconds = time.perf_counter() - self.start
         Timer.total += seconds  # keep global counter as well
 
         if not self.silent:
-            interval_full = str(datetime.timedelta(seconds=seconds))
+            interval_full = str(timedelta(seconds=seconds))
             interval = interval_full[:-3]
-            if (
-                seconds < 1 / 1000 or self.full
-            ):  # only show nanoseconds when no milliseconds
-                interval += f"'{interval_full[-3:]}"
+            if seconds < 1 / 1000 or self.full:
+                microseconds_message = interval_full[-3:]
+                interval += f"'{microseconds_message}"
 
             message = (
                 self.message.format(interval)
                 if "{}" in self.message
                 else f"{self.message}: {interval}"
             )
-            print(message)
+            cli.console.print(message)
 
 
-def timing(function):
+def timing(function: Callable):
     """
     Returns a timing decorator.
     Times duration of function
     """
 
+    @wraps(function)
     def timing_decorator(*args, **kwargs):
         with Timer(function.__name__):
             return function(*args, **kwargs)
