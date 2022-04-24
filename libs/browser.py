@@ -1,16 +1,11 @@
-import time
-
-import selenium
-from retry import retry
-from selenium.common.exceptions import (
-    InvalidCookieDomainException,
-    NoSuchElementException,
-    StaleElementReferenceException,
-)
-from selenium.webdriver.common.keys import Keys
-
 import cli
+import selenium
 from plib import Path
+from retry import retry
+from selenium.common.exceptions import (InvalidCookieDomainException,
+                                        NoSuchElementException,
+                                        StaleElementReferenceException)
+from selenium.webdriver.common.keys import Keys
 
 
 class Browser(selenium.webdriver.Chrome):

@@ -1,5 +1,3 @@
-import subprocess
-
 from setuptools import find_packages, setup
 
 NAME = "libs"

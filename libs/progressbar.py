@@ -1,5 +1,6 @@
 try:
     from libs.popup import Popup as ProgressBar
+
 except ImportError:
     # no progress
     class ProgressBar:

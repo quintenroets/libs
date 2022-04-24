@@ -1,8 +1,4 @@
-import fnmatch
 import itertools
-import os
-import subprocess
-import time
 
 import dbus
 
