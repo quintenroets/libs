@@ -99,8 +99,17 @@ class Browser(selenium.webdriver.Chrome):
             url = self.base_url + url
         return super().get(url)
 
-    def fill_in(self, items):
+    def fill_in(self, items, add_enter=True, ignored_exceptions=()):
         for id_, value in items.items():
-            field = self.find_element_by_id(id_)
-            if not field.get_property("value"):  # don't fill in twice
-                field.send_keys(value, Keys.ENTER)
+            try:
+                self.fill_in_field(id_, value, add_enter=add_enter)
+            except ignored_exceptions:
+                pass
+
+    def fill_in_field(self, id_, value, add_enter):
+        field = self.find_element_by_id(id_)
+        if value is None:
+            field.click()
+        if not field.get_property("value"):  # don't fill in twice
+            keys = ((value, Keys.ENTER) if add_enter else value,)
+            field.send_keys(*keys)
