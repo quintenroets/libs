@@ -1,8 +1,9 @@
 import importlib
 import sys
 
-from libs.debug import Debugger
 from plib import Path
+
+from libs.debug import Debugger
 
 
 class Reloader(Debugger):
@@ -47,7 +48,10 @@ def _reload(root=None):
 
     for module in to_reload:
         load_time = get_load_time(module)
-        module = importlib.reload(module)
+        try:
+            module = importlib.reload(module)
+        except ModuleNotFoundError:
+            module = importlib.import_module(module)
 
         if get_load_time(module) > load_time:
             name = module.__dict__["__name__"]
